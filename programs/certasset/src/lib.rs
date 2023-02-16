@@ -26,6 +26,7 @@ pub struct CreateSR<'info> {
 
 #[derive(Accounts)]
 pub struct SignRequest<'info> {
+    #[account(mut)]
     request: Account<'info, SigningRequest>,
     signer: Signer<'info>
 }
