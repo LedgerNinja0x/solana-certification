@@ -21,7 +21,11 @@ pub mod certasset {
 
 #[derive(Accounts)]
 pub struct CreateSR<'info> {
+    #[account(init, payer=applicant, space=8+SigningRequest::MAXIMUM_SIZE)]
+    request: Account<'info, SigningRequest>,
+    #[account(mut)]
     applicant: Signer<'info>,
+    system_program: Program<'info, System>
 }
 
 #[derive(Accounts)]
@@ -36,8 +40,12 @@ pub struct SignRequest<'info> {
 
 #[account]
 pub struct SigningRequest {
-    applicant: Pubkey,
-    authority: Pubkey,
-    uri: String,
-    signed: bool
+    applicant: Pubkey, // 32
+    authority: Pubkey, // 32
+    uri: String, // 8 + 24 + 40 + 40
+    signed: bool // 1
+}
+
+impl SigningRequest {
+    const MAXIMUM_SIZE: usize = 40+40+24+8;
 }
