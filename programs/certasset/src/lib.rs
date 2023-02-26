@@ -10,6 +10,7 @@ pub mod certasset {
 
     /// Used for testing purposes
     pub fn ping(_ctx: Context<Void>) -> Result<()>{
+        msg!("PING! PING!");
         Ok(())
     }
 
