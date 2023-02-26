@@ -10,10 +10,12 @@ pub mod certasset {
 
     /// Allows the user to create a certification request
     pub fn create_request(ctx: Context<CreateSR>, authority: Pubkey, uri: String) -> Result<()> {
+        msg!("CertAsset Program: Creating Signing Request");
         ctx.accounts.request.applicant = ctx.accounts.applicant.key();
         ctx.accounts.request.authority = authority;
         ctx.accounts.request.uri = uri;
         ctx.accounts.request.signed = false;
+        msg!("CertAsset Program: Signing Request Created");
 
         Ok(())
     }
