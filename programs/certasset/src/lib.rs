@@ -1,4 +1,7 @@
-use anchor_lang::prelude::*;
+use anchor_lang::{
+    prelude::*,
+    error::Error
+};
 
 declare_id!("Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS");
 
@@ -8,11 +11,18 @@ pub mod certasset {
 
     /// Allows the user to create a certification request
     pub fn create_request(ctx: Context<CreateSR>, authority: Pubkey, uri: String) -> Result<()> {
+        ctx.accounts.request.applicant = ctx.accounts.applicant.key();
+        ctx.accounts.request.authority = authority;
+        ctx.accounts.request.uri = uri;
+        ctx.accounts.request.signed = false;
+
         Ok(())
     }
 
     /// Allows the Signer Authority to Sign a Certification Request
     pub fn sign_certificate(ctx: Context<SignRequest>) -> Result<()> {
+        ctx.accounts.request.signed = true;
+
         Ok(())
     }
 }
@@ -30,9 +40,9 @@ pub struct CreateSR<'info> {
 
 #[derive(Accounts)]
 pub struct SignRequest<'info> {
-    #[account(mut)]
+    #[account(mut, has_one = authority)]
     request: Account<'info, SigningRequest>,
-    signer: Signer<'info>
+    authority: Signer<'info>
 }
 
 
