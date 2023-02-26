@@ -25,9 +25,7 @@ describe("certasset", () => {
 
     const tx = await program.methods.createRequest(authority.publicKey, "hola mundo")
       .accounts({
-        request: applicant.publicKey,
-        applicant: applicant.publicKey,
-        systemProgram: anchor.web3.SystemProgram.programId
+        request: applicant.publicKey
       })
       .signers([applicant]).rpc();
     console.log("Your transaction signature", tx);
