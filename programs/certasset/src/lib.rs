@@ -8,6 +8,11 @@ declare_id!("Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS");
 pub mod certasset {
     use super::*;
 
+    /// Used for testing purposes
+    pub fn ping(ctx: Context<Void>) -> Result<()>{
+        Ok(())
+    }
+
     /// Allows the user to create a certification request
     pub fn create_request(ctx: Context<CreateSR>, authority: Pubkey, uri: String) -> Result<()> {
         msg!("CertAsset Program: Creating Signing Request");
@@ -29,6 +34,10 @@ pub mod certasset {
 }
 
 // Instructions
+
+#[derive(Accounts)]
+/// Void Context for Testing Transactions
+pub struct Void {}
 
 #[derive(Accounts)]
 pub struct CreateSR<'info> {
