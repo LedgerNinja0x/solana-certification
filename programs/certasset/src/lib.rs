@@ -23,6 +23,11 @@ pub mod certasset {
         ctx.accounts.request.signed = false;
         msg!("CertAsset Program: Signing Request Created");
 
+        msg!("Applicant: {}", ctx.accounts.request.applicant.key().to_string());
+        msg!("Authority: {}", ctx.accounts.request.authority.key().to_string());
+        msg!("URI: {}", ctx.accounts.request.uri);
+        msg!("Signed: {}", ctx.accounts.request.signed);
+
         Ok(())
     }
 
