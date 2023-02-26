@@ -9,7 +9,7 @@ pub mod certasset {
     use super::*;
 
     /// Used for testing purposes
-    pub fn ping(ctx: Context<Void>) -> Result<()>{
+    pub fn ping(_ctx: Context<Void>) -> Result<()>{
         Ok(())
     }
 
