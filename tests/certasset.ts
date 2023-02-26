@@ -9,6 +9,12 @@ describe("certasset", () => {
 
   const program = anchor.workspace.Certasset as Program<Certasset>;
 
+  it("Ping the Program", async () => {
+    console.log("Pinging Program ...");
+    await program.methods.ping().rpc();
+    console.log("Succesfull Ping!")
+  })
+
   it("Creates a Signing Request", async () => {
     // Creates Authority and Applicant
     console.log("Generating Testing Keypairs ...");
