@@ -1,5 +1,6 @@
 import * as anchor from "@project-serum/anchor";
 import { Program } from "@project-serum/anchor";
+import { expect } from "chai";
 import { Certasset } from "../target/types/certasset";
 
 describe("certasset", () => {
@@ -8,9 +9,27 @@ describe("certasset", () => {
 
   const program = anchor.workspace.Certasset as Program<Certasset>;
 
-  it("Is initialized!", async () => {
-    // Add your test here.
-    const tx = await program.methods.initialize().rpc();
+  it("Creates a Signing Request", async () => {
+    // Creates Authority and Applicant
+    console.log("Generating Testing Keypairs ...");
+    const authority = anchor.web3.Keypair.generate();
+    console.log("Generated Authority: " + authority.publicKey.toString());
+    const applicant = anchor.web3.Keypair.generate();
+    console.log("Generated Applicant: " + applicant.publicKey.toString());
+
+    const tx = await program.methods.createRequest(authority.publicKey, "hola mundo")
+      .accounts({
+        request: applicant.publicKey,
+        applicant: applicant.publicKey
+      })
+      .signers([applicant]).rpc();
     console.log("Your transaction signature", tx);
+
+    let signingRequest = await program.account.signingRequest.fetch(applicant.publicKey);
+
+    expect(signingRequest.applicant).equal(applicant.publicKey);
+    expect(signingRequest.authority).equal(authority.publicKey);
+    expect(signingRequest.signed).equal(false);
+    expect(signingRequest.uri).equal("hola mundo");
   });
 });
