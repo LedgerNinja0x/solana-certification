@@ -47,5 +47,5 @@ pub struct SigningRequest {
 }
 
 impl SigningRequest {
-    const MAXIMUM_SIZE: usize = 40+40+24+8;
+    const MAXIMUM_SIZE: usize = 32+32+(40+40+24+8)+1;
 }
