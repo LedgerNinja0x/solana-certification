@@ -8,6 +8,7 @@ describe("certasset", () => {
   anchor.setProvider(anchor.AnchorProvider.env());
 
   const program = anchor.workspace.Certasset as Program<Certasset>;
+  const provider = anchor.AnchorProvider.local();
 
   it("Ping the Program", async () => {
     console.log("Pinging Program ...");
@@ -20,14 +21,16 @@ describe("certasset", () => {
     console.log("Generating Testing Keypairs ...");
     const authority = anchor.web3.Keypair.generate();
     console.log("Generated Authority: " + authority.publicKey.toString());
-    const applicant = anchor.web3.Keypair.generate();
+    const applicant = provider.wallet;
     console.log("Generated Applicant: " + applicant.publicKey.toString());
 
     const tx = await program.methods.createRequest(authority.publicKey, "hola mundo")
       .accounts({
-        request: applicant.publicKey
+        request: applicant.publicKey,
+        applicant: applicant.publicKey,
+        systemProgram: anchor.web3.SystemProgram.programId
       })
-      .signers([applicant]).rpc();
+      .rpc();
     console.log("Your transaction signature", tx);
 
     let signingRequest = await program.account.signingRequest.fetch(applicant.publicKey);
