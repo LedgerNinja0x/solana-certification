@@ -1,6 +1,5 @@
 use anchor_lang::{
-    prelude::*,
-    error::Error
+    prelude::*
 };
 
 declare_id!("Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS");
