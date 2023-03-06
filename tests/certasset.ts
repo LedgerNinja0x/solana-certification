@@ -41,7 +41,7 @@ describe("certasset", () => {
       .rpc();
     console.log("Your transaction signature", tx);
 
-    let signingRequest = await program.account.signingRequest.fetch(applicant.publicKey);
+    let signingRequest = await program.account.signingRequest.fetch(request_key.publicKey);
 
     expect(signingRequest.applicant).equal(applicant.publicKey);
     expect(signingRequest.authority).equal(authority.publicKey);
