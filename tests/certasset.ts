@@ -43,8 +43,8 @@ describe("certasset", () => {
 
     let signingRequest = await program.account.signingRequest.fetch(request_key.publicKey);
 
-    assert.ok(signingRequest.applicant.equals(applicant.publicKey), "Applicant Key Mismatch");
-    assert.ok(signingRequest.authority.equals(authority.publicKey), "Authority Key Mismatch");
+    assert.ok(signingRequest.applicant.equals(applicant.publicKey));
+    assert.ok(signingRequest.authority.equals(authority.publicKey));
     assert.isFalse(signingRequest.signed);
     assert.equal(signingRequest.uri, "hola mundo");
   });
