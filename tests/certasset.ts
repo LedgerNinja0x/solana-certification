@@ -1,6 +1,6 @@
 import * as anchor from "@project-serum/anchor";
 import { AnchorError, Program } from "@project-serum/anchor";
-import { expect } from "chai";
+import { assert, expect } from "chai";
 import { Certasset } from "../target/types/certasset";
 
 describe("certasset", () => {
@@ -43,9 +43,9 @@ describe("certasset", () => {
 
     let signingRequest = await program.account.signingRequest.fetch(request_key.publicKey);
 
-    expect(signingRequest.applicant).equal(applicant.publicKey);
-    expect(signingRequest.authority).equal(authority.publicKey);
-    expect(signingRequest.signed).equal(false);
-    expect(signingRequest.uri).equal("hola mundo");
+    assert.ok(signingRequest.applicant.equals(applicant.publicKey), "Applicant Key Mismatch");
+    assert.ok(signingRequest.authority.equals(authority.publicKey), "Authority Key Mismatch");
+    assert.isFalse(signingRequest.signed);
+    assert.equal(signingRequest.uri, "hola mundo");
   });
 });
