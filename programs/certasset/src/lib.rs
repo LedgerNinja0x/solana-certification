@@ -1,6 +1,8 @@
-use anchor_lang::{
-    prelude::*
-};
+mod state;
+mod instruction_context;
+
+use anchor_lang::prelude::*;
+use instruction_context::*;
 
 //declare_id!("Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS");
 declare_id!("spxGCXzMEKBuYAsCd5wcAUD2mz8745cYZD9D8xXVgtg");
@@ -38,41 +40,4 @@ pub mod certasset {
 
         Ok(())
     }
-}
-
-// Instructions
-
-#[derive(Accounts)]
-/// Void Context for Testing Transactions
-pub struct Void {}
-
-#[derive(Accounts)]
-pub struct CreateSR<'info> {
-    #[account(init, payer=applicant, space=8+SigningRequest::MAXIMUM_SIZE)]
-    request: Account<'info, SigningRequest>,
-    #[account(mut)]
-    applicant: Signer<'info>,
-    system_program: Program<'info, System>
-}
-
-#[derive(Accounts)]
-pub struct SignRequest<'info> {
-    #[account(mut, has_one = authority)]
-    request: Account<'info, SigningRequest>,
-    authority: Signer<'info>
-}
-
-
-// Accounts
-
-#[account]
-pub struct SigningRequest {
-    applicant: Pubkey, // 32
-    authority: Pubkey, // 32
-    uri: String, // 8 + 24 + 40 + 40
-    signed: bool // 1
-}
-
-impl SigningRequest {
-    const MAXIMUM_SIZE: usize = 32+32+(40+40+24+8)+1;
 }
