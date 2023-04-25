@@ -1,4 +1,5 @@
 use anchor_lang::prelude::*;
+use anchor_spl::token_interface::Token2022;
 
 use crate::state::SigningRequest;
 
@@ -21,5 +22,6 @@ pub struct CreateSR<'info> {
 pub struct SignRequest<'info> {
     #[account(mut, has_one = authority)]
     pub request: Account<'info, SigningRequest>,
-    pub authority: Signer<'info>
+    pub authority: Signer<'info>,
+    pub token_program_2022: Program<'info, Token2022>
 }
