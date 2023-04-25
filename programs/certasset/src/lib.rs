@@ -9,6 +9,8 @@ declare_id!("spxGCXzMEKBuYAsCd5wcAUD2mz8745cYZD9D8xXVgtg");
 
 #[program]
 pub mod certasset {
+    use anchor_spl::{token_interface::Token2022, token_2022::{*, self}};
+
     use super::*;
 
     /// Used for testing purposes
@@ -37,6 +39,16 @@ pub mod certasset {
     /// Allows the Signer Authority to Sign a Certification Request
     pub fn sign_certificate(ctx: Context<SignRequest>) -> Result<()> {
         ctx.accounts.request.signed = true;
+        ctx.accounts.request.bump = ctx.bumps.get("mint").unwrap().clone();
+
+        let token_2022 = ctx.accounts.token_program_2022.to_account_info();
+        let init_instr = InitializeMint2 {
+            mint: ctx.accounts.mint.to_account_info()
+        };
+
+        let cpi_ctx = CpiContext::new(token_2022, init_instr);
+
+        token_2022::initialize_mint2(cpi_ctx, 0, ctx.accounts.authority.key, Some(ctx.accounts.authority.key)).unwrap();
 
         Ok(())
     }
