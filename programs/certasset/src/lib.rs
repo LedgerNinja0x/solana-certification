@@ -9,7 +9,7 @@ declare_id!("spxGCXzMEKBuYAsCd5wcAUD2mz8745cYZD9D8xXVgtg");
 
 #[program]
 pub mod certasset {
-    use anchor_spl::{token_interface::Token2022, token_2022::{*, self}};
+    use anchor_spl::token_2022;
 
     use super::*;
 
