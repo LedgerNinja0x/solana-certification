@@ -48,11 +48,21 @@ describe("certasset", () => {
     assert.isFalse(signingRequest.signed);
     assert.equal(signingRequest.uri, "hola mundo");
 
+    const [mint_key, _bump] = anchor.web3.PublicKey.findProgramAddressSync(
+      [
+        anchor.utils.bytes.utf8.encode("certasset-rq"),
+        request_key.publicKey.toBuffer()
+      ],
+      program.programId
+    );
+
     const cert_tx = await program.methods
       .signCertificate()
       .accounts({
         authority: authority.publicKey,
         request: request_key.publicKey,
+        mint: mint_key
+
         systemProgram: anchor.web3.SystemProgram.programId,
         tokenProgram2022: new anchor.web3.PublicKey(
           "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb"
