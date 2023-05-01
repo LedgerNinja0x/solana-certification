@@ -2,7 +2,6 @@ import * as anchor from "@project-serum/anchor";
 import { Program } from "@project-serum/anchor";
 import { assert } from "chai";
 import { Certasset } from "../target/types/certasset";
-import { Connection } from "@solana/web3.js";
 
 describe("certasset", () => {
   // Configure the client to use the local cluster.
@@ -62,13 +61,16 @@ describe("certasset", () => {
   });
 
   it("Certificates a Signing Request", async () => {
-    const [mint_key, _bump] = anchor.web3.PublicKey.findProgramAddressSync(
+    console.log("Generating PDA Public Key Address...");
+    const [mint_key, bump] = anchor.web3.PublicKey.findProgramAddressSync(
       [
         anchor.utils.bytes.utf8.encode("certasset-rq"),
         request_key.publicKey.toBuffer(),
       ],
       program.programId
     );
+    console.log("Mint PDA: " + mint_key);
+    console.log("Bump: " + bump);
 
     const cert_tx = await program.methods
       .signCertificate()
