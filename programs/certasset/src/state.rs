@@ -37,6 +37,12 @@ impl Owner for Mint2022 {
     }
 }
 
+impl Id for Mint2022 {
+    fn id() -> Pubkey {
+        spl_token_2022::ID
+    }
+}
+
 
 impl SigningRequest {
     pub const MAXIMUM_SIZE: usize = 32+32+(40+40+24+8)+1+1;
