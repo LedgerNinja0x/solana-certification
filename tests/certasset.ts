@@ -61,7 +61,7 @@ describe("certasset", () => {
       .accounts({
         authority: authority.publicKey,
         request: request_key.publicKey,
-        mint: mint_key
+        mint: mint_key,
 
         systemProgram: anchor.web3.SystemProgram.programId,
         tokenProgram2022: new anchor.web3.PublicKey(
