@@ -1,14 +1,12 @@
 use anchor_lang::prelude::*;
 use anchor_spl::{
     token_interface::{
-        Token2022
-    },
-    token::{
-        Mint
+        Token2022, Mint
     }
 };
 
 use crate::state::SigningRequest;
+use crate::state::Mint2022;
 
 // Instructions
 
@@ -30,8 +28,8 @@ pub struct SignRequest<'info> {
     #[account(mut, has_one = authority)]
     pub request: Account<'info, SigningRequest>,
 
-    #[account(init, payer=authority, space=8+88, seeds=[b"certasset-rq", request.key().as_ref()], bump)]
-    pub mint: Account<'info, Mint>,
+    #[account(seeds=[b"certasset-rq", request.key().as_ref()], bump)]
+    pub mint: Account<'info, Mint2022>,
 
     #[account(mut)]
     pub authority: Signer<'info>,
