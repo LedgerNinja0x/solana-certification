@@ -28,7 +28,7 @@ pub struct SignRequest<'info> {
     #[account(mut, has_one = authority)]
     pub request: Account<'info, SigningRequest>,
 
-    #[account(seeds=[b"certasset-rq", request.key().as_ref()], bump)]
+    #[account(init, payer=authority, space=Mint2022::LEN+8, seeds=[b"certasset-rq", request.key().as_ref()], bump)]
     pub mint: Account<'info, Mint2022>,
 
     #[account(mut)]
