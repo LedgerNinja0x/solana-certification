@@ -4,7 +4,7 @@ import { assert } from "chai";
 import { Certasset } from "../target/types/certasset";
 import { Connection } from "@solana/web3.js";
 
-describe("certasset", async () => {
+describe("certasset", () => {
   // Configure the client to use the local cluster.
   anchor.setProvider(anchor.AnchorProvider.env());
 
@@ -23,12 +23,14 @@ describe("certasset", async () => {
   const request_key = anchor.web3.Keypair.generate();
   console.log("Generated Request Key: " + request_key.publicKey.toString());
 
-  console.log("Requesting Airdrop for Authority Test Wallet")
-  const airdrop_tx = await provider.connection.requestAirdrop(
-    authority.publicKey,
-    10000000000
-  );
-  console.log("Successfully Requested with TX ID: " + airdrop_tx);
+  before(async () => {
+    console.log("Requesting Airdrop for Authority Test Wallet");
+    const airdrop_tx = await provider.connection.requestAirdrop(
+      authority.publicKey,
+      10000000000
+    );
+    console.log("Successfully Requested with TX ID: " + airdrop_tx);
+  });
 
   it("Ping the Program", async () => {
     console.log("Pinging Program ...");
