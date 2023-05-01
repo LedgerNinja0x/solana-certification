@@ -1,6 +1,6 @@
 import * as anchor from "@project-serum/anchor";
-import { AnchorError, Program } from "@project-serum/anchor";
-import { assert, expect } from "chai";
+import { Program } from "@project-serum/anchor";
+import { assert } from "chai";
 import { Certasset } from "../target/types/certasset";
 
 describe("certasset", () => {
@@ -47,5 +47,23 @@ describe("certasset", () => {
     assert.ok(signingRequest.authority.equals(authority.publicKey));
     assert.isFalse(signingRequest.signed);
     assert.equal(signingRequest.uri, "hola mundo");
+
+    const cert_tx = await program.methods
+      .signCertificate()
+      .accounts({
+        authority: authority.publicKey,
+        request: request_key.publicKey,
+        systemProgram: anchor.web3.SystemProgram.programId,
+        tokenProgram2022: new anchor.web3.PublicKey(
+          "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb"
+        ),
+      })
+      .signers([authority]);
+    
+    let signedRequest = await program.account.signingRequest.fetch(
+      request_key.publicKey
+    );
+
+    assert.isTrue(signedRequest.signed);
   });
 });
