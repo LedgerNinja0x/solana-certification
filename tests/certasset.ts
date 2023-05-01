@@ -58,7 +58,8 @@ describe("certasset", () => {
           "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb"
         ),
       })
-      .signers([authority]);
+      .signers([authority])
+      .rpc();
     
     let signedRequest = await program.account.signingRequest.fetch(
       request_key.publicKey
