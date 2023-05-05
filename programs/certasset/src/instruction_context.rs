@@ -31,7 +31,7 @@ pub struct SignRequest<'info> {
     #[account(
         init, 
         payer=authority, 
-        space=Mint2022::LEN+8, 
+        space=Mint2022::LEN,
         owner=token_program_2022.key(),
 
         seeds=[b"certasset-rq", request.key().as_ref()], bump
