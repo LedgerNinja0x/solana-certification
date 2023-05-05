@@ -72,6 +72,13 @@ pub mod certasset {
             Err(e) => return Err(e),
         }
 
+        let mint_check = Account::<Mint2022>::try_from(&ctx.accounts.mint);
+
+        match mint_check {
+            Ok(_) => {},
+            Err(e) => return Err(e)
+        }
+
         msg!("Request Signed Successfully!");
 
         Ok(())
