@@ -85,7 +85,9 @@ describe("certasset", () => {
         ),
       })
       .signers([authority])
-      .rpc();
+      .rpc({
+        skipPreflight: true,
+      });
   
     console.log("Signing Request Sent and Processed!");
 
