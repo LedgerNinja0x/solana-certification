@@ -86,6 +86,8 @@ describe("certasset", () => {
       })
       .signers([authority])
       .rpc();
+  
+    console.log("Signing Request Sent and Processed!");
 
     let signedRequest = await program.account.signingRequest.fetch(
       request_key.publicKey
