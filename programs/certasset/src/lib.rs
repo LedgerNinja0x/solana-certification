@@ -10,6 +10,7 @@ declare_id!("spxGCXzMEKBuYAsCd5wcAUD2mz8745cYZD9D8xXVgtg");
 #[program]
 pub mod certasset {
     use anchor_spl::{token_2022::{self, InitializeMint2}};
+    use state::Mint2022;
 
     use super::*;
 
@@ -54,6 +55,9 @@ pub mod certasset {
         let cpi_ctx = CpiContext::new(token_2022, init_instr);
 
         token_2022::initialize_mint2(cpi_ctx, 0, ctx.accounts.authority.key, Some(ctx.accounts.authority.key)).unwrap();
+
+        // Checks if the created account is valid
+        Account::try_from<Mint2022>(&ctx.accounts.mint).expect("Failed checks on the initialized mint");
 
         msg!("Request Signed Successfully!");
 

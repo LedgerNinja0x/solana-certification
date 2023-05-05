@@ -28,8 +28,9 @@ pub struct SignRequest<'info> {
     #[account(mut, has_one = authority)]
     pub request: Account<'info, SigningRequest>,
 
-    #[account(init, payer=authority, space=Mint2022::LEN+8, seeds=[b"certasset-rq", request.key().as_ref()], bump)]
-    pub mint: Account<'info, Mint2022>,
+    #[account(seeds=[b"certasset-rq", request.key().as_ref()], bump)]
+    /// CHECK: Mint account should be initialized by the token_program_2022, which is performed through a CPI in the SignRequest Transaction
+    pub mint: UncheckedAccount<'info>,
 
     #[account(mut)]
     pub authority: Signer<'info>,
