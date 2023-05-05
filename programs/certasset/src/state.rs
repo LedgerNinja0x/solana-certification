@@ -21,14 +21,26 @@ impl Mint2022 {
 
 impl AccountDeserialize for Mint2022 {
     fn try_deserialize_unchecked(buf: &mut &[u8]) -> Result<Self> {
-        spl_token_2022::state::Mint::unpack(buf)
-            .map(Mint2022)
-            .map_err(Into::into)
+        msg!("Deserializing: {:?}", buf);
+        let mint_native = spl_token_2022::state::Mint::unpack(buf);
+
+        match mint_native {
+            Ok(_) => msg!("Unpack Successfull"),
+            Err(_) => msg!("Unpack failed")
+        };
+
+        msg!("Mapping");
+
+        mint_native.map(Mint2022)
+            .map_err(Into::into)    
     }
 }
 
 impl AccountSerialize for Mint2022 {
-    
+    fn try_serialize<W: std::io::Write>(&self, _writer: &mut W) -> Result<()> {
+        msg!("Serializing");
+        Ok(())
+    }
 }
 
 impl Owner for Mint2022 {
