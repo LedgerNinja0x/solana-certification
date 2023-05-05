@@ -54,10 +54,20 @@ pub mod certasset {
 
         let cpi_ctx = CpiContext::new(token_2022, init_instr);
 
-        token_2022::initialize_mint2(cpi_ctx, 0, ctx.accounts.authority.key, Some(ctx.accounts.authority.key)).unwrap();
+        let call_result = token_2022::initialize_mint2(cpi_ctx, 0, ctx.accounts.authority.key, Some(ctx.accounts.authority.key));
+
+        match call_result {
+            Ok(_) => {},
+            Err(e) => return Err(e),
+        }
 
         // Checks if the created account is valid
-        let _mint_check: Account<Mint2022> = Account::try_from(&ctx.accounts.mint).expect("Failed checks on the initialized mint");
+        let mint_check = Account::<Mint2022>::try_from(&ctx.accounts.mint);
+
+        match mint_check {
+            Ok(_) => {},
+            Err(e) => return Err(e)
+        }
 
         msg!("Request Signed Successfully!");
 
