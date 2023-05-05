@@ -57,7 +57,7 @@ pub mod certasset {
         let token_2022 = ctx.accounts.token_program_2022.to_account_info();
         let init_instr = InitializeMint {
             mint: ctx.accounts.mint.to_account_info(),
-            rent: ctx.accounts.authority.to_account_info()
+            rent: ctx.accounts.rent.to_account_info()
         };
         msg!("Mint: {}", ctx.accounts.mint.key().to_string());
         msg!("Mint Account Owner: {}", ctx.accounts.mint.to_account_info().owner.to_string());
