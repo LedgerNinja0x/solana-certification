@@ -57,7 +57,7 @@ pub mod certasset {
         token_2022::initialize_mint2(cpi_ctx, 0, ctx.accounts.authority.key, Some(ctx.accounts.authority.key)).unwrap();
 
         // Checks if the created account is valid
-        Account::try_from<Mint2022>(&ctx.accounts.mint).expect("Failed checks on the initialized mint");
+        let _mint_check: Account<Mint2022> = Account::try_from(&ctx.accounts.mint).expect("Failed checks on the initialized mint");
 
         msg!("Request Signed Successfully!");
 
