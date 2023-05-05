@@ -36,7 +36,8 @@ pub struct SignRequest<'info> {
 
         seeds=[b"certasset-rq", request.key().as_ref()], bump
     )]
-    pub mint: Account<'info, Mint2022>,
+    /// CHECK: Account being initialized by CPI call to Token Program 2022
+    pub mint: AccountInfo<'info>,
 
     #[account(mut)]
     pub authority: Signer<'info>,
