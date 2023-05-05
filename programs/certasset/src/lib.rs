@@ -41,8 +41,18 @@ pub mod certasset {
     pub fn sign_certificate(ctx: Context<SignRequest>) -> Result<()> {
         msg!("CertAsset Program: Signing Request ...");
         ctx.accounts.request.signed = true;
-        ctx.accounts.request.bump = ctx.bumps.get("mint").unwrap().clone();
+        let bump = ctx.bumps.get("mint").unwrap().clone();
+        ctx.accounts.request.bump = bump;
         msg!("Generating NFT with PDA Bump: {}", ctx.accounts.request.bump);
+
+        let reqkey = ctx.accounts.request.key();
+
+        let seeds = vec![bump];
+        let seeds = vec![b"certasset-rq".as_ref(), reqkey.as_ref(), seeds.as_slice()];
+        let seeds = vec![seeds.as_slice()];
+        let seeds = seeds.as_slice();
+
+        msg!("Seeds: {:?}", seeds);
 
         let token_2022 = ctx.accounts.token_program_2022.to_account_info();
         let init_instr = InitializeMint2 {
@@ -54,7 +64,7 @@ pub mod certasset {
 
         let cpi_ctx = CpiContext::new(token_2022, init_instr);
 
-        let call_result = token_2022::initialize_mint2(cpi_ctx, 0, ctx.accounts.authority.key, Some(ctx.accounts.authority.key));
+        let call_result = token_2022::initialize_mint2(cpi_ctx.with_signer(seeds), 0, ctx.accounts.authority.key, Some(ctx.accounts.authority.key));
 
         match call_result {
             Ok(_) => {},
