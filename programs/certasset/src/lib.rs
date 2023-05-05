@@ -38,17 +38,24 @@ pub mod certasset {
 
     /// Allows the Signer Authority to Sign a Certification Request
     pub fn sign_certificate(ctx: Context<SignRequest>) -> Result<()> {
+        msg!("CertAsset Program: Signing Request ...");
         ctx.accounts.request.signed = true;
         ctx.accounts.request.bump = ctx.bumps.get("mint").unwrap().clone();
+        msg!("Generating NFT with PDA Bump: {}", ctx.accounts.request.bump);
 
         let token_2022 = ctx.accounts.token_program_2022.to_account_info();
         let init_instr = InitializeMint2 {
             mint: ctx.accounts.mint.to_account_info()
         };
+        msg!("Mint: {}", ctx.accounts.mint.key().to_string());
+        msg!("Mint Account Owner: {}", ctx.accounts.mint.to_account_info().owner.to_string());
+        msg!("Token 2022 Program: {}", ctx.accounts.token_program_2022.key().to_string());
 
         let cpi_ctx = CpiContext::new(token_2022, init_instr);
 
         token_2022::initialize_mint2(cpi_ctx, 0, ctx.accounts.authority.key, Some(ctx.accounts.authority.key)).unwrap();
+
+        msg!("Request Signed Successfully!");
 
         Ok(())
     }
