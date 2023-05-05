@@ -9,7 +9,7 @@ declare_id!("spxGCXzMEKBuYAsCd5wcAUD2mz8745cYZD9D8xXVgtg");
 
 #[program]
 pub mod certasset {
-    use anchor_spl::{token_2022::{self, InitializeMint2}};
+    use anchor_spl::{token_2022::{self, InitializeMint}};
     use state::Mint2022;
 
     use super::*;
@@ -55,8 +55,9 @@ pub mod certasset {
         msg!("Seeds: {:?}", seeds);
 
         let token_2022 = ctx.accounts.token_program_2022.to_account_info();
-        let init_instr = InitializeMint2 {
-            mint: ctx.accounts.mint.to_account_info()
+        let init_instr = InitializeMint {
+            mint: ctx.accounts.mint.to_account_info(),
+            rent: ctx.accounts.authority.to_account_info()
         };
         msg!("Mint: {}", ctx.accounts.mint.key().to_string());
         msg!("Mint Account Owner: {}", ctx.accounts.mint.to_account_info().owner.to_string());
@@ -64,7 +65,7 @@ pub mod certasset {
 
         let cpi_ctx = CpiContext::new(token_2022, init_instr);
 
-        let call_result = token_2022::initialize_mint2(cpi_ctx.with_signer(seeds), 0, ctx.accounts.authority.key, Some(ctx.accounts.authority.key));
+        let call_result = token_2022::initialize_mint(cpi_ctx.with_signer(seeds), 0, ctx.accounts.authority.key, Some(ctx.accounts.authority.key));
 
         match call_result {
             Ok(_) => {},
