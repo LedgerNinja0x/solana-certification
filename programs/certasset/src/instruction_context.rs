@@ -1,7 +1,7 @@
 use anchor_lang::prelude::*;
 use anchor_spl::{
     token_interface::{
-        Token2022, Mint
+        Token2022
     }
 };
 
