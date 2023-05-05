@@ -37,5 +37,7 @@ pub struct SignRequest<'info> {
 
     pub token_program_2022: Program<'info, Token2022>,
 
-    pub system_program: Program<'info, System>
+    pub system_program: Program<'info, System>,
+
+    pub rent: Sysvar<'info, Rent>
 }
