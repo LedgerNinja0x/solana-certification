@@ -1,6 +1,12 @@
 use anchor_lang::prelude::*;
+use anchor_spl::{
+    token_interface::{
+        Token2022
+    }
+};
 
 use crate::state::SigningRequest;
+use crate::state::Mint2022;
 
 // Instructions
 
@@ -21,5 +27,24 @@ pub struct CreateSR<'info> {
 pub struct SignRequest<'info> {
     #[account(mut, has_one = authority)]
     pub request: Account<'info, SigningRequest>,
-    pub authority: Signer<'info>
+
+    #[account(
+        init, 
+        payer=authority, 
+        space=Mint2022::LEN,
+        owner=token_program_2022.key(),
+
+        seeds=[b"certasset-rq", request.key().as_ref()], bump
+    )]
+    /// CHECK: Account being initialized by CPI call to Token Program 2022
+    pub mint: AccountInfo<'info>,
+
+    #[account(mut)]
+    pub authority: Signer<'info>,
+
+    pub token_program_2022: Program<'info, Token2022>,
+
+    pub system_program: Program<'info, System>,
+
+    pub rent: Sysvar<'info, Rent>
 }
