@@ -3,6 +3,7 @@ name = "certasset"
 version = "0.0.1"
 description = "Created with Anchor"
 edition = "2021"
+license = "MIT"
 
 [lib]
 crate-type = ["cdylib", "lib"]
